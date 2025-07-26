@@ -29,8 +29,8 @@ class GameController extends Controller
      * Display the specified resource.
      */
     public function show(Game $game)
-    {
-        //
+    { 
+        return response($game->load(['products', 'category']));
     }
 
     /**

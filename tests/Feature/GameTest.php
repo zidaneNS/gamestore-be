@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Game;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -34,6 +35,34 @@ class GameTest extends TestCase
                             'game_id',
                             'img_url'
                         ]
+                    ]
+                ]
+            ]);
+    }
+
+    public function test_can_get_game_details(): void
+    {
+        $game = Game::find(1);
+
+        $response = $this->get('api/games/' . $game->id);
+
+        $response
+            ->assertStatus(200)
+            ->assertJsonStructure([
+                'id',
+                'title',
+                'description',
+                'category',
+                'img_url',
+                'currency_name',
+                'products' => [
+                    '*' => [
+                        'id',
+                        'amount',
+                        'price',
+                        'original_price',
+                        'game_id',
+                        'img_url'
                     ]
                 ]
             ]);
