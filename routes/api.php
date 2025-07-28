@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,8 @@ Route::middleware('auth:sanctum')->group(function() {
 
     Route::apiResource('games', GameController::class)->except(['index', 'show']);
     Route::apiResource('products', ProductController::class)->except('index');
+
+    Route::get('checkout/{product}', [OrderController::class, 'checkout']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();
