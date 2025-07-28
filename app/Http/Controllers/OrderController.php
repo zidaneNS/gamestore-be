@@ -38,11 +38,9 @@ class OrderController extends Controller
         );
 
         $snapToken = Snap::getSnapToken($params);
-        $snapUrl = Snap::getSnapUrl($params);
 
         return response(array(
             'snapToken' => $snapToken,
-            'snapUrl' => $snapUrl
         ), 201);
     }
 }

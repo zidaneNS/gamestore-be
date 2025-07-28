@@ -23,8 +23,7 @@ class OrderTest extends TestCase
         $repsonse
             ->assertStatus(201)
             ->assertJsonStructure([
-                'snapToken',
-                'snapUrl'
+                'snapToken'
             ]);
 
         $this->assertDatabaseHas('orders', [
