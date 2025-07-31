@@ -19,9 +19,12 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::apiResource('games', GameController::class)->except(['index', 'show']);
+    
     Route::apiResource('products', ProductController::class)->except('index');
-
+    
+    Route::get('orders', [OrderController::class, 'index']);
     Route::get('checkout/{product}', [OrderController::class, 'checkout']);
+    Route::get('orders/user', [OrderController::class, 'byUser']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();
