@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -106,5 +107,38 @@ class OrderTest extends TestCase
                     'user_id' => $user->id
                 ]
             ]);
+    }
+
+    public function test_can_update_order_status()
+    {
+        $admin = User::find(1);
+        $user = User::factory()->create(['role' => 'user']);
+
+        $product = Product::find(1);
+
+        $this->actingAs($user)->get('api/checkout/' . $product->id);
+
+        $orders = Order::all();
+        $order = $orders[0];
+
+        $response = $this->actingAs($admin)->putJson('api/orders/' . $order->id, [
+            'status' => 'succeed'
+        ]);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'id' => $order->id,
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'status' => 'succeed'
+            ]);
+
+        $this->assertDatabaseHas('orders', [
+            'id' => $order->id,
+            'user_id' => $user->id,
+            'product_id' => $product->id,
+            'status' => 'succeed'
+        ]);
     }
 }

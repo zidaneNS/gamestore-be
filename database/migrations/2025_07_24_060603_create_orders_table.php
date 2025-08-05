@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Product::class);
             $table->enum('status', ['pending', 'succeed', 'failed']);

@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function() {
     Route::get('orders', [OrderController::class, 'index']);
     Route::get('checkout/{product}', [OrderController::class, 'checkout']);
     Route::get('orders/user', [OrderController::class, 'byUser']);
+    Route::put('orders/{order}', [OrderController::class, 'update']);
 
     Route::get('/user', function (Request $request) {
         return $request->user();

@@ -16,7 +16,7 @@ class OrderController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('admin-only', only: ['index'])
+            new Middleware('admin-only', only: ['index', 'update'])
         ];
     }
 
@@ -57,8 +57,16 @@ class OrderController extends Controller implements HasMiddleware
                 'order_id' => $order->id,
                 'gross_amount' => $product->price
             ),
+            'item_details' => array(
+                array(
+                    'id' => $product->id,
+                    'price' => $product->price,
+                    'name' => $product->game->title . ' - ' . $product->game->currency_name . ' | ' . $product->amount,
+                    'quantity' => 1
+                )
+            ),
             'customer_details' => array(
-                'name' => $order->user->name,
+                'first_name' => $order->user->name,
                 'email' => $order->user->email
             )
         );
@@ -68,5 +76,18 @@ class OrderController extends Controller implements HasMiddleware
         return response(array(
             'snapToken' => $snapToken,
         ), 201);
+    }
+
+    public function update(Request $request, Order $order)
+    {
+        $validatedFields = $request->validate([
+            'status' => 'required'
+        ]);
+        
+        $order->update([
+            'status' => $validatedFields['status']
+        ]);
+
+        return response($order);
     }
 }
